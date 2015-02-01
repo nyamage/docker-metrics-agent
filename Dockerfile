@@ -16,12 +16,13 @@ RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 CMD ["/sbin/my_init"]
 
 # Setup fluentd
-RUN mkdir -p /etc/fluent \\
-	&& gem install fluentd --no-ri --no-rdoc \\
-	&& cd /etc/fluent && fluentd --setup . \\
-	&& mkdir -p /var/log/td-agent/tmp/ \\
-	&& fluent-gem install fluent-plugin-record-reformer fluent-plugin-docker-metrics \\
- 	&& mkdir -p /etc/service/fluentd
+RUN mkdir -p /etc/fluent \
+	&& gem install fluentd --no-ri --no-rdoc --verbose \ 
+	&& cd /etc/fluent \
+	&& fluentd --setup . \
+	&& mkdir -p /var/log/td-agent/tmp/ \
+	&& fluent-gem install fluent-plugin-docker-metrics --no-ri --no-rdoc \  
+	&& mkdir -p /etc/service/fluentd
 
 # To run fluentd by default
 ADD fluent/    /etc/fluent/
